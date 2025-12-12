@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Success{% endblock %}
+{% block content %}
+
+<div class="success-box">
+    <h2>Logged in Successfully</h2>
+    <p>Redirecting in 10 seconds...</p>
+</div>
+
+<script>
+    setTimeout(function(){
+        window.location.href = "{{ url_for('home') }}";
+    }, 10000);
+</script>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ book.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        {% if user %}
+            <a href="{{ url_for('account') }}">Account</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </nav>
+    
+  <main class="book-details">
+
+    
+    <h1 class="book-title">{{ book.title }}</h1>
+
+   
+    <p class="book-summary">{{ book.summary }}</p>
+
+  
+    <img src="{{ url_for('static', filename='images/' ~ book.image) }}" alt="{{ book.title }}"
+         alt="{{ book.title }}" class="book-image">
+
+    
+    <section class="reviews">
+      <h2>Reviews</h2>
+
+      {% if reviews %}
+      <div class="reviews-list">
+        {% for review in reviews %}
+          <div class="review-card">
+            <div class="review-header">
+              <span class="review-user">{{ review.user.username }}</span>
+              <span class="review-rating">{{ review.rating }}/5 ⭐</span>
+            </div>
+            <p class="review-text">{{ review.text }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+        <p class="no-reviews">No reviews yet — be the first!</p>
+      {% endif %}
+    </section>
+
+
+    {% if user %}
+    <section class="add-review">
+      <h2>Add a Review</h2>
+
+      
+      <form method="POST" action="{{ url_for('book_details', id=book.id) }}">
+
+        <label for="rating">Rating (1–5)</label>
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
+
+        <label for="text">Your Review</label>
+        <textarea name="text" id="text" rows="4" required></textarea>
+
+        <button type="submit">Submit Review</button>
+      </form>
+    </section>
+
+    {% else %}
+      <p><a href="{{ url_for('login') }}">Log in</a> to add a review.</p>
+    {% endif %}
+
+  </main>
+
+</body>
+</html>
